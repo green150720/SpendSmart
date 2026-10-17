@@ -7,13 +7,14 @@ namespace SpendSmart
     {
         public static void Main(string[] args)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<SpendSmartDbContext>(options => 
-                options.UseInMemoryDatabase("SpendSmartDb")
+            builder.Services.AddDbContext<SpendSmartDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
 
             var app = builder.Build();

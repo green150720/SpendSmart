@@ -1,21 +1,55 @@
-﻿@{
+﻿@model SpendSmart.Models.Expense
+
+@{
     ViewData["Title"] = "Create / Edit";
 }
-
-@model SpendSmart.Models.Expense
 
 <div class="text-center">
     <h1 class="display-4">Create or edit an expense</h1>
 </div>
 
-<form asp-action="CreateEditExpenseForm" asp-controller="Home">
-    <input hidden class="form-control" type="number" placeholder="0" asp-for="Id" />
+<form asp-action="CreateEditExpenseForm"
+      asp-controller="Home"
+      method="post">
 
-    <label class="mt-4">Value $</label>
-    <input class="form-control" type="number" placeholder="0" asp-for="Value" step="0.01" />
+    <input type="hidden" asp-for="Id" />
 
-    <label class="mt-4">Description </label>
-    <input class="form-control" type="text" placeholder="Add a description" asp-for="Description" />
+    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <button class="btn btn-primary mt-4" type="submit">Ok</button>
+    <label class="mt-4">Value (₦)</label>
+    <input class="form-control"
+           type="number"
+           asp-for="Value"
+           step="0.01"
+           min="0.01"
+           required />
+
+    <label class="mt-4">Description</label>
+    <input class="form-control"
+           type="text"
+           asp-for="Description"
+           placeholder="Add a description"
+           required />
+
+    <label class="mt-4">Category</label>
+    <select class="form-control" asp-for="Category" required>
+        <option value="">Select a category</option>
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Bills">Bills</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Education">Education</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label class="mt-4">Date</label>
+    <input class="form-control"
+           type="date"
+           asp-for="Date"
+           asp-format="{0:yyyy-MM-dd}"
+           required />
+
+    <button class="btn btn-primary mt-4" type="submit">
+        Save Expense
+    </button>
 </form>
