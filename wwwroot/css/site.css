@@ -242,3 +242,19 @@ html[data-theme="dark"] .stat-card {
     font-size: 24px;
     font-weight: 700;
 }
+
+/* Mobile Layout Enhancements */
+@media (max-width: 768px) {
+    .ss-nav-container {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        padding: 10px !important;
+    }
+
+    .ss-nav-links {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
+    }
+}
