@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpendSmart.Models
 {
@@ -17,5 +18,8 @@ namespace SpendSmart.Models
 
         [Required]
         public DateTime? Date { get; set; } = DateTime.Today;
+
+        public string? UserId { get; set; }
+        public IdentityUser? User { get; set; }
     }
 }

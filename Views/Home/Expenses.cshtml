@@ -8,9 +8,23 @@
     <h1 class="display-4">Expenses</h1>
     <hr />
 
-    <h3>Total expenses: ₦@(((decimal)ViewBag.Expenses).ToString("N2"))</h3>
-    <h3>This month's expenses: ₦@(((decimal)ViewBag.MonthlyExpenses).ToString("N2"))</h3>
-    <h3>Total transactions: @ViewBag.TotalTransactions</h3>
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Total expenses</div>
+            <div class="stat-value">₦@(((decimal)ViewBag.Expenses).ToString("N2"))</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">This month's expenses</div>
+            <div class="stat-value">₦@(((decimal)ViewBag.MonthlyExpenses).ToString("N2"))</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">Total transactions</div>
+            <div class="stat-value">@ViewBag.TotalTransactions</div>
+        </div>
+    </div>
+</div>
 
     <table class="table table-striped">
         <thead>
@@ -48,4 +62,3 @@
 
     <a asp-action="CreateEditExpense"
        class="btn btn-success">Add New Expense</a>
-</div>

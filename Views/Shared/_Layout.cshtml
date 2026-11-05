@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8" />
@@ -11,18 +10,35 @@
 <body>
     <header>
         <nav class="ss-navbar">
-            <div class="ss-nav-container">
+            <div class="ss-nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap;">
+
+                <!-- Brand / Logo -->
                 <a class="ss-brand" asp-controller="Home" asp-action="Index">
                     <span class="ss-brand-icon">S</span>
                     <span>SpendSmart</span>
                 </a>
 
-                <div class="ss-nav-links">
+                <!-- Nav Links + Auth Links -->
+                <div class="ss-nav-links" style="display: flex; align-items: center; gap: 15px;">
                     <a asp-controller="Home" asp-action="Index">Home</a>
                     <a asp-controller="Home" asp-action="Expenses">Expenses</a>
                     <a asp-controller="Home" asp-action="CreateEditExpense">+ Add Expense</a>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <span style="font-weight: 500; opacity: 0.9;">Hi, @User.Identity.Name</span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" style="display: inline;">
+                            <button type="submit" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; padding: 0;">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">Login</a>
+                        <a asp-controller="Account" asp-action="Register">Register</a>
+                    }
                 </div>
 
+                <!-- Dark Mode Toggle Button (Kept in original place on far right) -->
                 <button type="button" id="themeToggle"
                         class="ss-theme-toggle"
                         aria-label="Switch colour theme">

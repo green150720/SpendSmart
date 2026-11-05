@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SpendSmart.Models;
 
@@ -17,6 +18,18 @@ namespace SpendSmart
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
 
+            // --- ADD IDENTITY SERVICE HERE ---
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+
+            })
+                .AddEntityFrameworkStores<SpendSmartDbContext>()
+                .AddDefaultTokenProviders();
+            // ---------------------------------
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,6 +45,7 @@ namespace SpendSmart
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
