@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SpendSmart.Models;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 
 
 namespace SpendSmart.Controllers
@@ -10,13 +13,16 @@ namespace SpendSmart.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly SpendSmartDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public HomeController(
             ILogger<HomeController> logger,
-            SpendSmartDbContext context)
+            SpendSmartDbContext context,
+            UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -26,8 +32,13 @@ namespace SpendSmart.Controllers
 
         public IActionResult Expenses()
         {
+            // Get the logged-in user's ID
+            var userId = _userManager.GetUserId(User);
+            
             var allExpenses = _context.Expenses
+                .Where(expense => expense.UserId == userId)
                 .OrderByDescending(expense => expense.Date)
+                .ThenByDescending(expense => expense.Id)
                 .ToList();
 
             ViewBag.Expenses = allExpenses.Sum(expense => expense.Value);
@@ -51,6 +62,8 @@ namespace SpendSmart.Controllers
                 return View(new Expense { Date = DateTime.Today });
             }
 
+            var userId = _userManager.GetUserId(User);
+
             var expenseInDb = _context.Expenses
                 .SingleOrDefault(expense => expense.Id == id);
 
@@ -65,6 +78,17 @@ namespace SpendSmart.Controllers
         [HttpPost]
         public IActionResult CreateEditExpenseForm(Expense model)
         {
+            var userId = _userManager.GetUserId(User);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Clear ModelState validation for User fields so validation succeeds
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
             if (!ModelState.IsValid)
             {
                 return View("CreateEditExpense", model);
@@ -72,12 +96,14 @@ namespace SpendSmart.Controllers
 
             if (model.Id == 0)
             {
+                // Explicitly set the logged-in user ID
+                model.UserId = userId;
                 _context.Expenses.Add(model);
             }
             else
             {
                 var expenseInDb = _context.Expenses
-                    .SingleOrDefault(expense => expense.Id == model.Id);
+                    .SingleOrDefault(expense => expense.Id == model.Id && expense.UserId == userId);
 
                 if (expenseInDb == null)
                 {
@@ -97,6 +123,8 @@ namespace SpendSmart.Controllers
 
         public IActionResult DeleteExpense(int id)
         {
+            var userId = _userManager.GetUserId(User);      
+
             var expenseInDb = _context.Expenses
                 .SingleOrDefault(expense => expense.Id == id);
 
