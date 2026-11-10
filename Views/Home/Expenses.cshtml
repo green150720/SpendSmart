@@ -29,7 +29,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Value</th>
                 <th>Description</th>
                 <th>Category</th>
@@ -41,7 +40,6 @@
             @foreach (var expense in Model)
             {
                 <tr>
-                    <td>@expense.Id</td>
                     <td>₦@expense.Value.ToString("N2")</td>
                     <td>@expense.Description</td>
                     <td>@expense.Category</td>

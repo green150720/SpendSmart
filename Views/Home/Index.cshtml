@@ -4,6 +4,22 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <a asp-controller="Home" asp-action="Expenses" class="btn btn-primary" >Overview</a>
-    <a asp-controller="Home" asp-action="CreateEditExpense" class="btn btn-secondary">Create new</a>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Home" asp-action="Expenses" class="btn btn-primary" >Overview</a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login" class="btn btn-dark">Overview</a>
+    }
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Home" asp-action="CreateEditExpense" class="btn btn-dark">Create new</a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login" class="btn btn-dark">Create new</a>
+    }
 </div>

@@ -22,7 +22,15 @@
                 <div class="ss-nav-links" style="display: flex; align-items: center; gap: 15px;">
                     <a asp-controller="Home" asp-action="Index">Home</a>
                     <a asp-controller="Home" asp-action="Expenses">Expenses</a>
-                    <a asp-controller="Home" asp-action="CreateEditExpense">+ Add Expense</a>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Home" asp-action="CreateEditExpense">+ Add Expense</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">+ Add Expense</a>
+                    }   
 
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {

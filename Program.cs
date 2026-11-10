@@ -34,6 +34,13 @@ namespace SpendSmart
                 .AddDefaultTokenProviders();
             // ---------------------------------
 
+            // Override default login redirect for unauthenticated users
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // Redirect guests here
+                options.AccessDeniedPath = "/Account/Login";
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

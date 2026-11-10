@@ -34,7 +34,7 @@ namespace SpendSmart.Controllers
         {
             // Get the logged-in user's ID
             var userId = _userManager.GetUserId(User);
-            
+
             var allExpenses = _context.Expenses
                 .Where(expense => expense.UserId == userId)
                 .OrderByDescending(expense => expense.Date)

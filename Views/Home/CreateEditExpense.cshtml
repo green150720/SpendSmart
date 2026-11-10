@@ -18,6 +18,8 @@
 
     <label class="mt-4">Value (₦)</label>
     <input class="form-control"
+           onfocus="if(this.value=='0') this.value='';"
+           onblur="if(this.value=='') this.value='0';"
            type="number"
            asp-for="Value"
            step="0.01"
